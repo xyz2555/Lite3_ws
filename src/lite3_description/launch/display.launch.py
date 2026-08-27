@@ -13,7 +13,7 @@ def generate_launch_description():
         package_path
         / "Lite3"
         / "urdf"
-        / "Lite3.urdf"
+        / "Lite3_ros.urdf"
     )
 
     robot_description = urdf_path.read_text()
