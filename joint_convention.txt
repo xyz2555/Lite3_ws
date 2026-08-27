@@ -1,0 +1,15 @@
+FL_Hipx_Joint = bend indwards (+rad), ben outwards (-rad)
+FL_Hipy_Joint = push forward but just a little (0-0.314 rad), push backwards (-rad)
+FL_Knee_Joint = bend upwards (+rad), bend downwards (-rad)
+
+FR_Hipx_Joint = bend outwards (+rad), ben indwards (-rad)
+FR_Hipy_Joint = push forward but just a little (0-0.314 rad), push backwards (-rad)
+FR_Knee_Joint = bend upwards (+rad), bend downwards (-rad)
+
+HL_Hipx_Joint = bend indwards (+rad), ben outwards (-rad)
+HL_Hipy_Joint = push forward but just a little (0-0.314 rad), push backwards (-rad)
+HL_Knee_Joint = bend upwards (+rad), bend downwards (-rad)
+
+HR_Hipx_Joint = bend outwards (+rad), ben indwards (-rad)
+HR_Hipy_Joint = push forward but just a little (0-0.314 rad), push backwards (-rad)
+HR_Knee_Joint = bend upwards (+rad), bend downwards (-rad)
