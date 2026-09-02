@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package format="3">
+
+    <name>lite3_kinematics</name>
+    <version>0.0.1</version>
+
+    <description>
+        Kinematics model, forward kinematics, inverse kinematics and numerical validation for Deeprobotics Lite3 quadrupped 
+    </description>
+
+    <maintainer email="senaalfarabi31@gmail.com">Lexion</maintainer>
+
+    <license>Apache-2.0</license>
+
+    <buildtool_depend>ament_cmake</buildtool_depend>
+
+    <exec_depend>eigen</exec_depend>
+
+    <export>
+        <build_type>ament_cmake</build_type>
+    </export>
+
+</package>
