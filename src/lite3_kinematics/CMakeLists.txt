@@ -30,6 +30,14 @@ target_link_libraries(ik_validator
   lite3_kinematics_lib
 )
 
+add_executable(workspace_generator
+  src/workspace_generator.cpp
+)
+
+target_link_libraries(workspace_generator
+  lite3_kinematics_lib
+)
+
 install(
   TARGETS
     lite3_kinematics_lib
