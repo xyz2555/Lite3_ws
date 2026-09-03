@@ -42,6 +42,7 @@ install(
   TARGETS
     lite3_kinematics_lib
     ik_validator
+    workspace_generator
   DESTINATION lib/${PROJECT_NAME}
 )
 
