@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<package format="3">
+
+  <name>lite3_dynamics</name>
+  <version>0.0.1</version>
+
+  <description>
+    Dynamics model for the DeepRobotics Lite3 quadruped,
+    including mass properties, center of mass,
+    potential energy and gravity torque.
+  </description>
+
+  <maintainer email="senaalfarabi31@gmail.com">Lexion</maintainer>
+
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>eigen</depend>
+  <depend>lite3_kinematics</depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+
+</package>
