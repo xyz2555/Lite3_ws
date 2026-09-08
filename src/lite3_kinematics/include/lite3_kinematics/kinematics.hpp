@@ -80,6 +80,10 @@ public:
     const Eigen::Vector3d& target,
     const Eigen::Vector3d* seed = nullptr) const;
 
+  Eigen::Matrix3d jacobian(
+      Leg leg,
+      const Eigen::Vector3d& q) const;
+
   bool withinLimits(
     const Eigen::Vector3d& q) const;
 

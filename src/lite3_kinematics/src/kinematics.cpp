@@ -162,6 +162,103 @@ Lite3Kinematics::forward(
   return T.translation();
 }
 
+Eigen::Matrix3d Lite3Kinematics::jacobian(
+    Leg leg,
+    const Eigen::Vector3d& q) const
+{
+  const LegGeometry g = geometry(leg);
+
+  const double q1 = q(0);  // HipX
+  const double q2 = q(1);  // HipY
+  const double q3 = q(2);  // Knee
+
+  const double L1 = g.thigh_length;
+  const double L2 = g.shank_length;
+
+  const double d = g.hip_y_offset;
+
+  /*
+   * Same quantities used by FK:
+   *
+   * a = L1 sin(q2) + L2 sin(q2 + q3)
+   * b = -L1 cos(q2) - L2 cos(q2 + q3)
+   */
+  const double a =
+      L1 * std::sin(q2) +
+      L2 * std::sin(q2 + q3);
+
+  const double b =
+      -L1 * std::cos(q2) -
+      L2 * std::cos(q2 + q3);
+
+  /*
+   * Derivatives:
+   *
+   * da/dq2 = L1 cos(q2) + L2 cos(q2 + q3)
+   * da/dq3 = L2 cos(q2 + q3)
+   *
+   * db/dq2 = L1 sin(q2) + L2 sin(q2 + q3) = a
+   * db/dq3 = L2 sin(q2 + q3)
+   */
+  const double da_dq2 =
+      L1 * std::cos(q2) +
+      L2 * std::cos(q2 + q3);
+
+  const double da_dq3 =
+      L2 * std::cos(q2 + q3);
+
+  const double db_dq2 =
+      a;
+
+  const double db_dq3 =
+      L2 * std::sin(q2 + q3);
+
+  const double s1 = std::sin(q1);
+  const double c1 = std::cos(q1);
+
+  Eigen::Matrix3d J =
+      Eigen::Matrix3d::Zero();
+
+  /*
+   * x = hip_x + a
+   *
+   * dx/dq1 = 0
+   * dx/dq2 = da/dq2
+   * dx/dq3 = da/dq3
+   */
+  J(0, 0) = 0.0;
+  J(0, 1) = da_dq2;
+  J(0, 2) = da_dq3;
+
+  /*
+   * y = hip_y + d*cos(q1) + b*sin(q1)
+   *
+   * z = -d*sin(q1) + b*cos(q1)
+   */
+
+  J(1, 0) =
+      -d * s1 +
+      b * c1;
+
+  J(2, 0) =
+      -d * c1 -
+      b * s1;
+
+  J(1, 1) =
+      db_dq2 * s1;
+
+  J(2, 1) =
+      db_dq2 * c1;
+
+  J(1, 2) =
+      db_dq3 * s1;
+
+  J(2, 2) =
+      db_dq3 * c1;
+
+  return J;
+}
+
 
 bool
 Lite3Kinematics::withinLimits(
