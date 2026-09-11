@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>lite3_gazebo</name>
+  <version>0.0.0</version>
+  <description>Gazebo simulation package for Lite3 quadruped robot</description>
+
+  <maintainer email="senaalfarabi31@gmail.com">lexion</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>robot_state_publisher</depend>
+  <depend>ros_gz_sim</depend>
+  <depend>xacro</depend>
+  <depend>lite3_description</depend>
+
+  <export>
+        <build_type>ament_cmake</build_type>
+    </export>
+  
+</package>
