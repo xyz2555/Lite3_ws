@@ -8,6 +8,7 @@ find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(Eigen3 REQUIRED)
 find_package(lite3_kinematics REQUIRED)
+find_package(lite3_dynamics REQUIRED)
 
 add_executable(ik_gazebo_validator
   src/ik_gazebo_validator.cpp
@@ -46,6 +47,46 @@ add_executable(stair_trajectory_validator
   src/stair_trajectory_validator.cpp
 )
 
+add_executable(pd_gravity_controller
+  src/pd_gravity_controller.cpp
+)
+
+add_executable(gravity_only_controller
+  src/gravity_only_controller.cpp
+)
+
+ament_target_dependencies(gravity_only_controller
+  rclcpp
+  sensor_msgs
+  std_msgs
+)
+
+target_link_libraries(
+  gravity_only_controller
+  lite3_dynamics::lite3_dynamics_lib
+  lite3_kinematics::lite3_kinematics_lib
+  Eigen3::Eigen
+)
+
+install(TARGETS
+  gravity_only_controller
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+ament_target_dependencies(
+  pd_gravity_controller
+  rclcpp
+  sensor_msgs
+  std_msgs
+)
+
+target_link_libraries(
+  pd_gravity_controller
+  lite3_dynamics::lite3_dynamics_lib
+  lite3_kinematics::lite3_kinematics_lib
+  Eigen3::Eigen
+)
+
 ament_target_dependencies(
   stair_trajectory_validator
   rclcpp
@@ -74,6 +115,12 @@ install(
 install(
   TARGETS
     ik_gazebo_validator
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+install(
+  TARGETS
+    pd_gravity_controller
   DESTINATION lib/${PROJECT_NAME}
 )
 
