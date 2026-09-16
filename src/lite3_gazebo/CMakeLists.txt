@@ -68,11 +68,6 @@ target_link_libraries(
   Eigen3::Eigen
 )
 
-install(TARGETS
-  gravity_only_controller
-  DESTINATION lib/${PROJECT_NAME}
-)
-
 ament_target_dependencies(
   pd_gravity_controller
   rclcpp
@@ -100,6 +95,27 @@ target_link_libraries(
   Eigen3::Eigen
 )
 
+add_executable(single_leg_trajectory_controller
+  src/single_leg_trajectory_controller.cpp
+)
+
+ament_target_dependencies(single_leg_trajectory_controller
+  rclcpp
+  sensor_msgs
+  std_msgs
+)
+target_link_libraries(single_leg_trajectory_controller
+  lite3_dynamics::lite3_dynamics_lib
+  lite3_kinematics::lite3_kinematics_lib
+  Eigen3::Eigen
+)
+
+install(TARGETS
+  gravity_only_controller
+  single_leg_trajectory_controller
+  DESTINATION lib/${PROJECT_NAME}
+)
+
 install(
   TARGETS
     stair_trajectory_validator
@@ -121,6 +137,7 @@ install(
 install(
   TARGETS
     pd_gravity_controller
+    single_leg_trajectory_controller
   DESTINATION lib/${PROJECT_NAME}
 )
 
