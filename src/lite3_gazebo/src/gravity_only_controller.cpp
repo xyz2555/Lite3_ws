@@ -61,18 +61,19 @@ public:
             joint_index_[joint_names_[i]] = i;
         }
 
-        RCLCPP_INFO(
-            this->get_logger(),
-            "Gravity + P controller started at 500 Hz");
+     RCLCPP_INFO(
+    this->get_logger(),
+    "Gravity + PD controller started at 500 Hz");
 
-        RCLCPP_INFO(
-            this->get_logger(),
-            "Controller: tau = G(q) + Kp(qd - q)");
+RCLCPP_INFO(
+    this->get_logger(),
+    "Controller: tau = G(q) + Kp(qd - q) - Kd qdot");
 
-        RCLCPP_INFO(
-            this->get_logger(),
-            "Kp = %.2f Nm/rad",
-            Kp_);
+RCLCPP_INFO(
+    this->get_logger(),
+    "Kp = %.2f Nm/rad, Kd = %.2f Nms/rad",
+    Kp_,
+    Kd_);
     }
 
 private:
@@ -194,17 +195,26 @@ private:
                     q_leg);
 
             // P feedback for this leg
-            const Eigen::Vector3d error_leg(
-                error(3 * i + 0),
-                error(3 * i + 1),
-                error(3 * i + 2));
+        // Position error
+const Eigen::Vector3d error_leg(
+    error(3 * i + 0),
+    error(3 * i + 1),
+    error(3 * i + 2));
 
-            Eigen::Vector3d tau_leg =
-                tau_g + Kp_ * error_leg;
+// Joint velocity
+const Eigen::Vector3d qdot_leg(
+    qdot_(3 * i + 0),
+    qdot_(3 * i + 1),
+    qdot_(3 * i + 2));
 
-            // Torque saturation
-            tau_leg =
-                clampTorque(tau_leg);
+// Gravity + PD
+Eigen::Vector3d tau_leg =
+    tau_g
+    + Kp_ * error_leg
+    - Kd_ * qdot_leg;
+
+// Torque saturation
+tau_leg = clampTorque(tau_leg);
 
             // Store
             setLegTau(
@@ -304,6 +314,7 @@ private:
     // ========================================================
 
     const double Kp_ = 5.0;
+    const double Kd_ = 0.5;
 
     // ========================================================
     // Joint map
