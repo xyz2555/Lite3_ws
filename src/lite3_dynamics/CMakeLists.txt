@@ -20,6 +20,7 @@ find_package(lite3_kinematics REQUIRED)
 
 add_library(lite3_dynamics_lib
   src/dynamics.cpp
+  # src/lite3_single_leg_dynamics.cpp
 )
 
 target_include_directories(lite3_dynamics_lib
@@ -201,9 +202,18 @@ install(
     stair_contact_aware_inverse_dynamics
     stair_com_shift_contact_equilibrium
 
+  EXPORT lite3_dynamics_targets
+
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION lib/${PROJECT_NAME}
+)
+
+install(
+  EXPORT lite3_dynamics_targets
+  FILE lite3_dynamicsTargets.cmake
+  NAMESPACE lite3_dynamics::
+  DESTINATION share/${PROJECT_NAME}/cmake
 )
 
 install(
@@ -214,6 +224,8 @@ install(
 # ============================================================
 # Export
 # ============================================================
+
+ament_export_targets(lite3_dynamics_targets HAS_LIBRARY_TARGET)
 
 ament_export_include_directories(include)
 
