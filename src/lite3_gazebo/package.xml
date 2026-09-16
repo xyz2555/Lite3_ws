@@ -19,6 +19,7 @@
   <depend>std_msgs</depend>
   <depend>eigen</depend>
   <depend>lite3_kinematics</depend>
+  <depend>lite3_dynamics</depend>
 
   <export>
         <build_type>ament_cmake</build_type>
