@@ -110,9 +110,8 @@ public:
             fl_foot_start_(2));
 
         RCLCPP_INFO(
-            this->get_logger(),
-            "Trajectory: FL +%.1f mm in X, then return",
-            amplitude_ * 1000.0);
+    this->get_logger(),
+    "Trajectory: FL swing +30 mm X, +40 mm Z");
     }
 
 private:
@@ -240,86 +239,120 @@ private:
     // ========================================================
 
     void generateTrajectory(
-        double t,
-        Eigen::Vector3d &p_des,
-        Eigen::Vector3d &pdot_des)
-    {
-        p_des = fl_foot_start_;
-        pdot_des.setZero();
+    double t,
+    Eigen::Vector3d &p_des,
+    Eigen::Vector3d &pdot_des)
+{
+    p_des = fl_foot_start_;
+    pdot_des.setZero();
 
-        // ----------------------------------------------------
-        // Segment 1: standing -> +30 mm
-        // 0 <= t <= 2 s
-        // ----------------------------------------------------
+    // ========================================================
+    // Parameters
+    // ========================================================
 
-        if (t <= trajectory_duration_) {
+    const double T1 = 1.5;  // start -> apex
+    const double T2 = 1.5;  // apex -> landing
 
-            const double u =
-                std::clamp(
-                    t / trajectory_duration_,
-                    0.0,
-                    1.0);
+    const double x_apex =
+        fl_foot_start_(0) + 0.015;  // +15 mm
 
-            const double s =
-                quinticPosition(u);
+    const double x_final =
+        fl_foot_start_(0) + 0.030;  // +30 mm
 
-            const double dsdu =
-                quinticVelocity(u);
+    const double z_apex =
+        fl_foot_start_(2) + 0.040;  // +40 mm
 
-            p_des(0) =
-                fl_foot_start_(0) +
-                amplitude_ * s;
+    // ========================================================
+    // Segment 1: start -> apex
+    // ========================================================
 
-            pdot_des(0) =
-                amplitude_ *
-                dsdu /
-                trajectory_duration_;
+    if (t <= T1) {
 
-            return;
-        }
+        const double u =
+            std::clamp(t / T1, 0.0, 1.0);
 
-        // ----------------------------------------------------
-        // Segment 2: +30 mm -> standing
-        // 2 <= t <= 4 s
-        // ----------------------------------------------------
+        const double s =
+            quinticPosition(u);
 
-        if (t <= 2.0 * trajectory_duration_) {
+        const double dsdu =
+            quinticVelocity(u);
 
-            const double t2 =
-                t - trajectory_duration_;
+        p_des(0) =
+            fl_foot_start_(0) +
+            (x_apex - fl_foot_start_(0)) * s;
 
-            const double u =
-                std::clamp(
-                    t2 / trajectory_duration_,
-                    0.0,
-                    1.0);
+        p_des(1) =
+            fl_foot_start_(1);
 
-            const double s =
-                quinticPosition(u);
+        p_des(2) =
+            fl_foot_start_(2) +
+            (z_apex - fl_foot_start_(2)) * s;
 
-            const double dsdu =
-                quinticVelocity(u);
+        pdot_des(0) =
+            (x_apex - fl_foot_start_(0)) *
+            dsdu / T1;
 
-            p_des(0) =
-                fl_foot_start_(0) +
-                amplitude_ * (1.0 - s);
+        pdot_des(1) = 0.0;
 
-            pdot_des(0) =
-                -amplitude_ *
-                dsdu /
-                trajectory_duration_;
+        pdot_des(2) =
+            (z_apex - fl_foot_start_(2)) *
+            dsdu / T1;
 
-            return;
-        }
-
-        // ----------------------------------------------------
-        // Segment 3: hold standing
-        // t > 4 s
-        // ----------------------------------------------------
-
-        p_des = fl_foot_start_;
-        pdot_des.setZero();
+        return;
     }
+
+    // ========================================================
+    // Segment 2: apex -> landing
+    // ========================================================
+
+    if (t <= T1 + T2) {
+
+        const double t2 =
+            t - T1;
+
+        const double u =
+            std::clamp(t2 / T2, 0.0, 1.0);
+
+        const double s =
+            quinticPosition(u);
+
+        const double dsdu =
+            quinticVelocity(u);
+
+        p_des(0) =
+            x_apex +
+            (x_final - x_apex) * s;
+
+        p_des(1) =
+            fl_foot_start_(1);
+
+        p_des(2) =
+            z_apex +
+            (fl_foot_start_(2) - z_apex) * s;
+
+        pdot_des(0) =
+            (x_final - x_apex) *
+            dsdu / T2;
+
+        pdot_des(1) = 0.0;
+
+        pdot_des(2) =
+            (fl_foot_start_(2) - z_apex) *
+            dsdu / T2;
+
+        return;
+    }
+
+    // ========================================================
+    // Segment 3: hold landing
+    // ========================================================
+
+    p_des(0) = x_final;
+    p_des(1) = fl_foot_start_(1);
+    p_des(2) = fl_foot_start_(2);
+
+    pdot_des.setZero();
+}
 
     // ========================================================
     // Control loop
@@ -528,30 +561,31 @@ private:
                 p_fl_des -
                 p_fl_actual;
 
-            RCLCPP_INFO(
-                this->get_logger(),
+            
+        RCLCPP_INFO(
+    this->get_logger(),
 
-                "t=%.2f | "
-                "p_des=[%+.4f %+.4f %+.4f] | "
-                "p=[%+.4f %+.4f %+.4f] | "
-                "ep=[%+.4f %+.4f %+.4f] | "
-                "|ep|=%.2f mm",
+    "t=%.2f | "
+    "pd=[%+.4f %+.4f %+.4f] | "
+    "p=[%+.4f %+.4f %+.4f] | "
+    "e=[%+.2f %+.2f %+.2f] mm | "
+    "|e|=%.2f mm",
 
-                t,
+    t,
 
-                p_fl_des(0),
-                p_fl_des(1),
-                p_fl_des(2),
+    p_fl_des(0),
+    p_fl_des(1),
+    p_fl_des(2),
 
-                p_fl_actual(0),
-                p_fl_actual(1),
-                p_fl_actual(2),
+    p_fl_actual(0),
+    p_fl_actual(1),
+    p_fl_actual(2),
 
-                foot_error(0),
-                foot_error(1),
-                foot_error(2),
+    foot_error(0) * 1000.0,
+    foot_error(1) * 1000.0,
+    foot_error(2) * 1000.0,
 
-                foot_error.norm() * 1000.0);
+    foot_error.norm() * 1000.0);
         }
     }
 
@@ -608,9 +642,6 @@ private:
     // ========================================================
     // Trajectory parameters
     // ========================================================
-
-    const double amplitude_ = 0.03;       // 30 mm
-    const double trajectory_duration_ = 2.0;
 
     // ========================================================
     // Controller gains
