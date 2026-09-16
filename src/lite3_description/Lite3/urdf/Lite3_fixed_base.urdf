@@ -462,6 +462,7 @@
 
     <joint name="FL_HipX_joint">
       <command_interface name="position"/>
+      <command_interface name="effort"/>
       <state_interface name="position"/>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
@@ -469,6 +470,7 @@
 
     <joint name="FL_HipY_joint">
       <command_interface name="position"/>
+      <command_interface name="effort"/>
       <state_interface name="position"/>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
@@ -476,6 +478,7 @@
 
     <joint name="FL_Knee_joint">
       <command_interface name="position"/>
+      <command_interface name="effort"/>
       <state_interface name="position"/>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
@@ -484,6 +487,7 @@
 
     <joint name="FR_HipX_joint">
       <command_interface name="position"/>
+      <command_interface name="effort"/>
       <state_interface name="position"/>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
@@ -491,6 +495,7 @@
 
     <joint name="FR_HipY_joint">
       <command_interface name="position"/>
+      <command_interface name="effort"/>
       <state_interface name="position"/>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
@@ -498,6 +503,7 @@
 
     <joint name="FR_Knee_joint">
       <command_interface name="position"/>
+      <command_interface name="effort"/>
       <state_interface name="position"/>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
@@ -506,6 +512,7 @@
 
     <joint name="HL_HipX_joint">
       <command_interface name="position"/>
+      <command_interface name="effort"/>
       <state_interface name="position"/>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
@@ -513,6 +520,7 @@
 
     <joint name="HL_HipY_joint">
       <command_interface name="position"/>
+      <command_interface name="effort"/>
       <state_interface name="position"/>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
@@ -520,6 +528,7 @@
 
     <joint name="HL_Knee_joint">
       <command_interface name="position"/>
+      <command_interface name="effort"/>
       <state_interface name="position"/>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
@@ -528,6 +537,7 @@
 
     <joint name="HR_HipX_joint">
       <command_interface name="position"/>
+      <command_interface name="effort"/>
       <state_interface name="position"/>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
@@ -535,6 +545,7 @@
 
     <joint name="HR_HipY_joint">
       <command_interface name="position"/>
+      <command_interface name="effort"/>
       <state_interface name="position"/>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
@@ -542,6 +553,7 @@
 
     <joint name="HR_Knee_joint">
       <command_interface name="position"/>
+      <command_interface name="effort"/>
       <state_interface name="position"/>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
