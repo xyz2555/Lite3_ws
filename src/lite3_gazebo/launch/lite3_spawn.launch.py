@@ -83,7 +83,7 @@ def generate_launch_description():
             '-topic', 'robot_description',
             '-x', '0',
             '-y', '0',
-            '-z', '0.3435'
+            '-z', '0.390'
         ],
         output='screen'
     )
@@ -109,7 +109,8 @@ def generate_launch_description():
         arguments=[
             'lite3_position_controller',
             '--controller-manager',
-            '/controller_manager'
+            '/controller_manager',
+            '--inactive'
         ],
         output='screen'
     )
