@@ -26,7 +26,7 @@ def generate_launch_description():
         description_share,
         'Lite3',
         'urdf',
-        'Lite3_fixed_base.urdf'
+        'Lite3_gazebo.urdf'
     )
 
     world_file = os.path.join(
@@ -83,7 +83,7 @@ def generate_launch_description():
             '-topic', 'robot_description',
             '-x', '0',
             '-y', '0',
-            '-z', '0.390'
+            '-z', '0.3435'
         ],
         output='screen'
     )
