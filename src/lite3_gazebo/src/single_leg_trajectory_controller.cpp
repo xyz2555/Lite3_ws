@@ -103,6 +103,16 @@ public:
             Kd_);
 
         RCLCPP_INFO(
+    this->get_logger(),
+    "Periodic FL trajectory: "
+    "step=%.1f mm, swing height=%.1f mm, "
+    "cycle=%.2f s, duty=%.2f",
+    step_length_ * 1000.0,
+    swing_height_ * 1000.0,
+    cycle_duration_,
+    duty_factor_);
+
+        RCLCPP_INFO(
             this->get_logger(),
             "FL initial foot = [%+.6f %+.6f %+.6f] m",
             fl_foot_start_(0),
@@ -243,33 +253,44 @@ private:
     Eigen::Vector3d &p_des,
     Eigen::Vector3d &pdot_des)
 {
+    // ========================================================
+    // Default
+    // ========================================================
+
     p_des = fl_foot_start_;
     pdot_des.setZero();
 
     // ========================================================
-    // Parameters
+    // Pre-position:
+    // standing -> front position
+    //
+    // Kita lakukan ini supaya trajectory periodik dimulai
+    // dari posisi yang memang sudah disiapkan.
     // ========================================================
 
-    const double T1 = 1.5;  // start -> apex
-    const double T2 = 1.5;  // apex -> landing
+    const double x_front =
+    fl_foot_start_(0) + 0.5 * step_length_;
 
-    const double x_apex =
-        fl_foot_start_(0) + 0.015;  // +15 mm
+const double x_back =
+    fl_foot_start_(0) - 0.5 * step_length_;
 
-    const double x_final =
-        fl_foot_start_(0) + 0.030;  // +30 mm
+    const double z_ground =
+        fl_foot_start_(2);
 
     const double z_apex =
-        fl_foot_start_(2) + 0.040;  // +40 mm
+        z_ground + swing_height_;
 
-    // ========================================================
-    // Segment 1: start -> apex
-    // ========================================================
+    // --------------------------------------------------------
+    // 0 -> pre-position
+    // --------------------------------------------------------
 
-    if (t <= T1) {
+    if (t <= preposition_duration_) {
 
         const double u =
-            std::clamp(t / T1, 0.0, 1.0);
+            std::clamp(
+                t / preposition_duration_,
+                0.0,
+                1.0);
 
         const double s =
             quinticPosition(u);
@@ -279,39 +300,58 @@ private:
 
         p_des(0) =
             fl_foot_start_(0) +
-            (x_apex - fl_foot_start_(0)) * s;
+            (x_front - fl_foot_start_(0)) * s;
 
         p_des(1) =
             fl_foot_start_(1);
 
         p_des(2) =
-            fl_foot_start_(2) +
-            (z_apex - fl_foot_start_(2)) * s;
+            z_ground;
 
         pdot_des(0) =
-            (x_apex - fl_foot_start_(0)) *
-            dsdu / T1;
+            (x_front - fl_foot_start_(0)) *
+            dsdu /
+            preposition_duration_;
 
         pdot_des(1) = 0.0;
-
-        pdot_des(2) =
-            (z_apex - fl_foot_start_(2)) *
-            dsdu / T1;
+        pdot_des(2) = 0.0;
 
         return;
     }
 
     // ========================================================
-    // Segment 2: apex -> landing
+    // Periodic gait phase
     // ========================================================
 
-    if (t <= T1 + T2) {
+    const double gait_time =
+        t - preposition_duration_;
 
-        const double t2 =
-            t - T1;
+    const double phase_time =
+        std::fmod(
+            gait_time,
+            cycle_duration_);
+
+    const double stance_duration =
+        duty_factor_ *
+        cycle_duration_;
+
+    const double swing_duration =
+        cycle_duration_ -
+        stance_duration;
+
+    // ========================================================
+    // STANCE PHASE
+    //
+    // Foot moves from front -> back
+    // ========================================================
+
+    if (phase_time < stance_duration) {
 
         const double u =
-            std::clamp(t2 / T2, 0.0, 1.0);
+            std::clamp(
+                phase_time / stance_duration,
+                0.0,
+                1.0);
 
         const double s =
             quinticPosition(u);
@@ -320,40 +360,103 @@ private:
             quinticVelocity(u);
 
         p_des(0) =
-            x_apex +
-            (x_final - x_apex) * s;
+            x_front +
+            (x_back - x_front) * s;
 
         p_des(1) =
             fl_foot_start_(1);
 
         p_des(2) =
-            z_apex +
-            (fl_foot_start_(2) - z_apex) * s;
+            z_ground;
 
         pdot_des(0) =
-            (x_final - x_apex) *
-            dsdu / T2;
+            (x_back - x_front) *
+            dsdu /
+            stance_duration;
 
         pdot_des(1) = 0.0;
-
-        pdot_des(2) =
-            (fl_foot_start_(2) - z_apex) *
-            dsdu / T2;
+        pdot_des(2) = 0.0;
 
         return;
     }
 
     // ========================================================
-    // Segment 3: hold landing
+    // SWING PHASE
+    //
+    // Foot moves back -> front
+    // while lifting to apex
     // ========================================================
 
-    p_des(0) = x_final;
-    p_des(1) = fl_foot_start_(1);
-    p_des(2) = fl_foot_start_(2);
+    const double swing_time =
+        phase_time -
+        stance_duration;
 
-    pdot_des.setZero();
+    const double u =
+        std::clamp(
+            swing_time / swing_duration,
+            0.0,
+            1.0);
+
+    const double s =
+        quinticPosition(u);
+
+    const double dsdu =
+        quinticVelocity(u);
+
+    // --------------------------------------------------------
+    // X: back -> front
+    // --------------------------------------------------------
+
+    p_des(0) =
+        x_back +
+        (x_front - x_back) * s;
+
+    pdot_des(0) =
+        (x_front - x_back) *
+        dsdu /
+        swing_duration;
+
+    // --------------------------------------------------------
+    // Y: unchanged
+    // --------------------------------------------------------
+
+    p_des(1) =
+        fl_foot_start_(1);
+
+    pdot_des(1) = 0.0;
+
+    // --------------------------------------------------------
+    // Z: smooth bump
+    //
+    // b(u) = 16 u² (1-u)²
+    //
+    // b(0)=0
+    // b(0.5)=1
+    // b(1)=0
+    // --------------------------------------------------------
+
+    const double bump =
+        16.0 *
+        u * u *
+        (1.0 - u) *
+        (1.0 - u);
+
+    const double dbdu =
+        32.0 *
+        u *
+        (1.0 - u) *
+        (1.0 - 2.0 * u);
+
+    p_des(2) =
+        z_ground +
+        swing_height_ *
+        bump;
+
+    pdot_des(2) =
+        swing_height_ *
+        dbdu /
+        swing_duration;
 }
-
     // ========================================================
     // Control loop
     // ========================================================
@@ -642,6 +745,24 @@ private:
     // ========================================================
     // Trajectory parameters
     // ========================================================
+
+    // ========================================================
+// Gait trajectory parameters
+// ========================================================
+
+const double preposition_duration_ = 1.0;
+
+// Complete stance + swing cycle
+const double cycle_duration_ = 2.0;
+
+// 60% stance, 40% swing
+const double duty_factor_ = 0.60;
+
+// Step length = 60 mm
+const double step_length_ = 0.060;
+
+// Swing height = 40 mm
+const double swing_height_ = 0.040;
 
     // ========================================================
     // Controller gains
