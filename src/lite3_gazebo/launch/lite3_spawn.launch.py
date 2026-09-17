@@ -103,6 +103,18 @@ def generate_launch_description():
         output='screen'
     )
 
+    effort_controller_spawner = Node(
+    package="controller_manager",
+    executable="spawner",
+    arguments=[
+        "lite3_effort_controller",
+        "--controller-manager",
+        "/controller_manager",
+        "--inactive",
+    ],
+    output="screen",
+)
+
     position_controller_spawner = Node(
         package='controller_manager',
         executable='spawner',
@@ -130,5 +142,6 @@ def generate_launch_description():
         gz_sim,
         rsp,
         spawn,
-        controllers_after_spawn
+        controllers_after_spawn,
+         effort_controller_spawner
     ])
