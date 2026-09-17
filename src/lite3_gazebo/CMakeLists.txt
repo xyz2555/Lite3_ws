@@ -110,9 +110,28 @@ target_link_libraries(single_leg_trajectory_controller
   Eigen3::Eigen
 )
 
+add_executable(four_leg_gait_controller
+  src/four_leg_gait_controller.cpp
+)
+
+ament_target_dependencies(
+  four_leg_gait_controller
+  rclcpp
+  sensor_msgs
+  std_msgs
+)
+
+target_link_libraries(
+  four_leg_gait_controller
+  lite3_dynamics::lite3_dynamics_lib
+  lite3_kinematics::lite3_kinematics_lib
+  Eigen3::Eigen
+)
+
 install(TARGETS
   gravity_only_controller
   single_leg_trajectory_controller
+  four_leg_gait_controller
   DESTINATION lib/${PROJECT_NAME}
 )
 
