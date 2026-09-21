@@ -1,0 +1,775 @@
+<sdf version='1.11'>
+  <model name='Lite3'>
+    <link name='TORSO'>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>5.6055999999999999</mass>
+        <inertia>
+          <ixx>0.024559999999999998</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.05518</iyy>
+          <iyz>0</iyz>
+          <izz>0.07016</izz>
+        </inertia>
+      </inertial>
+      <collision name='TORSO_collision'>
+        <pose>0 0 0.01 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.5 0.10000000000000001 0.12</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name='TORSO_collision_1'>
+        <pose>0 0 0.01 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.25 0.20000000000000001 0.12</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name='TORSO_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://lite3_description/Lite3/urdf/meshes/torso.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name='FL_HipX_joint' type='revolute'>
+      <pose relative_to='TORSO'>0.17449999999999999 0.062 0 0 0 0</pose>
+      <parent>TORSO</parent>
+      <child>FL_HIP</child>
+      <axis>
+        <xyz>-1 0 0</xyz>
+        <limit>
+          <lower>-0.52300000000000002</lower>
+          <upper>0.52300000000000002</upper>
+          <effort>24</effort>
+          <velocity>26.199999999999999</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='FL_HIP'>
+      <pose relative_to='FL_HipX_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-0.0060099999999999997 -0.0066531999999999997 0.00034295000000000001 0 0 0</pose>
+        <mass>0.55000000000000004</mass>
+        <inertia>
+          <ixx>0.0003949</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.00040279999999999998</iyy>
+          <iyz>0</iyz>
+          <izz>0.00044719999999999997</izz>
+        </inertia>
+      </inertial>
+      <collision name='FL_HIP_collision'>
+        <pose>0 0.050000000000000003 0 1.5707963199999997 0 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.14999999999999999</length>
+            <radius>0.040000000000000001</radius>
+          </cylinder>
+        </geometry>
+      </collision>
+      <visual name='FL_HIP_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://lite3_description/Lite3/urdf/meshes/hip.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name='FL_HipY_joint' type='revolute'>
+      <pose relative_to='FL_HIP'>0 0.097350000000000006 0 0 0 0</pose>
+      <parent>FL_HIP</parent>
+      <child>FL_THIGH</child>
+      <axis>
+        <xyz>0 -1 0</xyz>
+        <limit>
+          <lower>-2.6699999999999999</lower>
+          <upper>0.314</upper>
+          <effort>24</effort>
+          <velocity>26.199999999999999</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='FL_THIGH'>
+      <pose relative_to='FL_HipY_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-0.0039245 -0.014631999999999999 -0.025146000000000002 0 0 0</pose>
+        <mass>0.85999999999999999</mass>
+        <inertia>
+          <ixx>0.0057359999999999998</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.00496</iyy>
+          <iyz>0</iyz>
+          <izz>0.001436</izz>
+        </inertia>
+      </inertial>
+      <collision name='FL_THIGH_collision'>
+        <pose>-0.014999999999999999 0 -0.080000000000000002 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.040000000000000001 0.044999999999999998 0.20000000000000001</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name='FL_THIGH_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://lite3_description/Lite3/urdf/meshes/thigh.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name='FL_Knee_joint' type='revolute'>
+      <pose relative_to='FL_THIGH'>0 0 -0.20000000000000001 0 0 0</pose>
+      <parent>FL_THIGH</parent>
+      <child>FL_SHANK</child>
+      <axis>
+        <xyz>0 -1 0</xyz>
+        <limit>
+          <lower>0.52400000000000002</lower>
+          <upper>2.7919999999999998</upper>
+          <effort>36</effort>
+          <velocity>17.300000000000001</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='FL_SHANK'>
+      <pose relative_to='FL_Knee_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0.0057303364161849718 -1.2854653179190751e-06 -0.1318069942196532 0 0 0</pose>
+        <mass>0.17299999999999999</mass>
+        <inertia>
+          <ixx>0.0010329543332743621</ixx>
+          <ixy>1.6658087961849691e-10</ixy>
+          <ixz>-1.0148425793063621e-05</ixz>
+          <iyy>0.0010500269160724949</iyy>
+          <iyz>2.2765590780346828e-09</iyz>
+          <izz>3.5880582872869052e-05</izz>
+        </inertia>
+      </inertial>
+      <collision name='FL_SHANK_collision'>
+        <pose>0.0050000000000000001 0 -0.029999999999999999 0 -0.20000000000000004 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.12</length>
+            <radius>0.014999999999999999</radius>
+          </cylinder>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <collision name='FL_SHANK_collision_1'>
+        <pose>0.01 0 -0.14000000000000001 0 0.14999999999999999 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.10000000000000001</length>
+            <radius>0.014999999999999999</radius>
+          </cylinder>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <collision name='FL_SHANK_fixed_joint_lump__FL_FOOT_collision_2'>
+        <pose>0 0 -0.21012 1.57079632679 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.021999999999999999</radius>
+          </sphere>
+        </geometry>
+      </collision>
+      <visual name='FL_SHANK_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://lite3_description/Lite3/urdf/meshes/shank.STL</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>1 1 1 1</diffuse>
+          <ambient>1 1 1 1</ambient>
+        </material>
+      </visual>
+      <sensor name='FL_contact' type='contact'>
+        <always_on>true</always_on>
+        <update_rate>500</update_rate>
+        <topic>/lite3/contact/FL</topic>
+        <contact>
+          <collision>FL_SHANK_fixed_joint_lump__FL_FOOT_collision_2</collision>
+          <topic>__default_topic__</topic>
+        </contact>
+      </sensor>
+    </link>
+    <joint name='FR_HipX_joint' type='revolute'>
+      <pose relative_to='TORSO'>0.17449999999999999 -0.062 0 0 0 0</pose>
+      <parent>TORSO</parent>
+      <child>FR_HIP</child>
+      <axis>
+        <xyz>-1 0 0</xyz>
+        <limit>
+          <lower>-0.52300000000000002</lower>
+          <upper>0.52300000000000002</upper>
+          <effort>24</effort>
+          <velocity>26.199999999999999</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='FR_HIP'>
+      <pose relative_to='FR_HipX_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-0.010579 0.011358 0.00048546 0 0 0</pose>
+        <mass>0.55000000000000004</mass>
+        <inertia>
+          <ixx>0.00044719999999999997</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.00040279999999999998</iyy>
+          <iyz>0</iyz>
+          <izz>0.0003949</izz>
+        </inertia>
+      </inertial>
+      <collision name='FR_HIP_collision'>
+        <pose>0 -0.050000000000000003 0 1.5707963199999997 0 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.14999999999999999</length>
+            <radius>0.040000000000000001</radius>
+          </cylinder>
+        </geometry>
+      </collision>
+      <visual name='FR_HIP_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 -1 1</scale>
+            <uri>model://lite3_description/Lite3/urdf/meshes/hip.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name='FR_HipY_joint' type='revolute'>
+      <pose relative_to='FR_HIP'>0 -0.097350000000000006 0 0 0 0</pose>
+      <parent>FR_HIP</parent>
+      <child>FR_THIGH</child>
+      <axis>
+        <xyz>0 -1 0</xyz>
+        <limit>
+          <lower>-2.6699999999999999</lower>
+          <upper>0.314</upper>
+          <effort>24</effort>
+          <velocity>26.199999999999999</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='FR_THIGH'>
+      <pose relative_to='FR_HipY_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-0.0039245 0.014631999999999999 -0.025146000000000002 0 0 0</pose>
+        <mass>0.85999999999999999</mass>
+        <inertia>
+          <ixx>0.0057359999999999998</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.00496</iyy>
+          <iyz>0</iyz>
+          <izz>0.001436</izz>
+        </inertia>
+      </inertial>
+      <collision name='FR_THIGH_collision'>
+        <pose>-0.014999999999999999 0 -0.080000000000000002 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.040000000000000001 0.044999999999999998 0.20000000000000001</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name='FR_THIGH_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 -1 1</scale>
+            <uri>model://lite3_description/Lite3/urdf/meshes/thigh.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name='FR_Knee_joint' type='revolute'>
+      <pose relative_to='FR_THIGH'>0 0 -0.20000000000000001 0 0 0</pose>
+      <parent>FR_THIGH</parent>
+      <child>FR_SHANK</child>
+      <axis>
+        <xyz>0 -1 0</xyz>
+        <limit>
+          <lower>0.52400000000000002</lower>
+          <upper>2.7919999999999998</upper>
+          <effort>36</effort>
+          <velocity>17.300000000000001</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='FR_SHANK'>
+      <pose relative_to='FR_Knee_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0.0057303364161849718 -1.286968786127168e-06 -0.1318069942196532 0 0 0</pose>
+        <mass>0.17299999999999999</mass>
+        <inertia>
+          <ixx>0.001032954333274449</ixx>
+          <ixy>1.667757110566474e-10</ixy>
+          <ixz>-1.0148425793063621e-05</ixz>
+          <iyy>0.0010500269160724949</iyy>
+          <iyz>2.2792217202312161e-09</iyz>
+          <izz>3.588058287295652e-05</izz>
+        </inertia>
+      </inertial>
+      <collision name='FR_SHANK_collision'>
+        <pose>0.0050000000000000001 0 -0.029999999999999999 0 -0.20000000000000004 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.12</length>
+            <radius>0.014999999999999999</radius>
+          </cylinder>
+        </geometry>
+      </collision>
+      <collision name='FR_SHANK_collision_1'>
+        <pose>0.01 0 -0.14000000000000001 0 0.14999999999999999 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.10000000000000001</length>
+            <radius>0.014999999999999999</radius>
+          </cylinder>
+        </geometry>
+      </collision>
+      <collision name='FR_SHANK_fixed_joint_lump__FR_FOOT_collision_2'>
+        <pose>0 0 -0.21012 1.57079632679 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.021999999999999999</radius>
+          </sphere>
+        </geometry>
+      </collision>
+      <visual name='FR_SHANK_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://lite3_description/Lite3/urdf/meshes/shank.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name='HL_HipX_joint' type='revolute'>
+      <pose relative_to='TORSO'>-0.17449999999999999 0.062 0 0 0 0</pose>
+      <parent>TORSO</parent>
+      <child>HL_HIP</child>
+      <axis>
+        <xyz>-1 0 0</xyz>
+        <limit>
+          <lower>-0.52300000000000002</lower>
+          <upper>0.52300000000000002</upper>
+          <effort>24</effort>
+          <velocity>26.199999999999999</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='HL_HIP'>
+      <pose relative_to='HL_HipX_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0.010905 -0.012636 0.0010510000000000001 0 0 0</pose>
+        <mass>0.55000000000000004</mass>
+        <inertia>
+          <ixx>0.0003949</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.00040279999999999998</iyy>
+          <iyz>0</iyz>
+          <izz>0.00044719999999999997</izz>
+        </inertia>
+      </inertial>
+      <collision name='HL_HIP_collision'>
+        <pose>0 0.050000000000000003 0 1.5707963199999997 0 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.14999999999999999</length>
+            <radius>0.040000000000000001</radius>
+          </cylinder>
+        </geometry>
+      </collision>
+      <visual name='HL_HIP_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>-1 1 1</scale>
+            <uri>model://lite3_description/Lite3/urdf/meshes/hip.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name='HL_HipY_joint' type='revolute'>
+      <pose relative_to='HL_HIP'>0 0.097350000000000006 0 0 0 0</pose>
+      <parent>HL_HIP</parent>
+      <child>HL_THIGH</child>
+      <axis>
+        <xyz>0 -1 0</xyz>
+        <limit>
+          <lower>-2.6699999999999999</lower>
+          <upper>0.314</upper>
+          <effort>24</effort>
+          <velocity>26.199999999999999</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='HL_THIGH'>
+      <pose relative_to='HL_HipY_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-0.0039245 -0.014631999999999999 -0.025146000000000002 0 0 0</pose>
+        <mass>0.85999999999999999</mass>
+        <inertia>
+          <ixx>0.0057359999999999998</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.00496</iyy>
+          <iyz>0</iyz>
+          <izz>0.001436</izz>
+        </inertia>
+      </inertial>
+      <collision name='HL_THIGH_collision'>
+        <pose>-0.014999999999999999 0 -0.080000000000000002 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.040000000000000001 0.044999999999999998 0.20000000000000001</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name='HL_THIGH_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://lite3_description/Lite3/urdf/meshes/thigh.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name='HL_Knee_joint' type='revolute'>
+      <pose relative_to='HL_THIGH'>0 0 -0.20000000000000001 0 0 0</pose>
+      <parent>HL_THIGH</parent>
+      <child>HL_SHANK</child>
+      <axis>
+        <xyz>0 -1 0</xyz>
+        <limit>
+          <lower>0.52400000000000002</lower>
+          <upper>2.7919999999999998</upper>
+          <effort>36</effort>
+          <velocity>17.300000000000001</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='HL_SHANK'>
+      <pose relative_to='HL_Knee_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0.0057303364161849718 -1.287499421965318e-06 -0.1318069942196532 0 0 0</pose>
+        <mass>0.17299999999999999</mass>
+        <inertia>
+          <ixx>0.0010329543332744809</ixx>
+          <ixy>1.668444750936416e-10</ixy>
+          <ixz>-1.0148425793063621e-05</ixz>
+          <iyy>0.0010500269160724949</iyy>
+          <iyz>2.2801614763005791e-09</iyz>
+          <izz>3.5880582872987413e-05</izz>
+        </inertia>
+      </inertial>
+      <collision name='HL_SHANK_collision'>
+        <pose>0.0050000000000000001 0 -0.029999999999999999 0 -0.20000000000000004 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.12</length>
+            <radius>0.014999999999999999</radius>
+          </cylinder>
+        </geometry>
+      </collision>
+      <collision name='HL_SHANK_collision_1'>
+        <pose>0.01 0 -0.14000000000000001 0 0.14999999999999999 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.10000000000000001</length>
+            <radius>0.014999999999999999</radius>
+          </cylinder>
+        </geometry>
+      </collision>
+      <collision name='HL_SHANK_fixed_joint_lump__HL_FOOT_collision_2'>
+        <pose>0 0 -0.21012 1.57079632679 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.021999999999999999</radius>
+          </sphere>
+        </geometry>
+      </collision>
+      <visual name='HL_SHANK_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://lite3_description/Lite3/urdf/meshes/shank.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name='HR_HipX_joint' type='revolute'>
+      <pose relative_to='TORSO'>-0.17449999999999999 -0.062 0 0 0 0</pose>
+      <parent>TORSO</parent>
+      <child>HR_HIP</child>
+      <axis>
+        <xyz>-1 0 0</xyz>
+        <limit>
+          <lower>-0.52300000000000002</lower>
+          <upper>0.52300000000000002</upper>
+          <effort>24</effort>
+          <velocity>26.199999999999999</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='HR_HIP'>
+      <pose relative_to='HR_HipX_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0.010354 0.011423000000000001 0.00049498000000000001 0 0 0</pose>
+        <mass>0.55000000000000004</mass>
+        <inertia>
+          <ixx>0.00044719999999999997</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.00040279999999999998</iyy>
+          <iyz>0</iyz>
+          <izz>0.0003949</izz>
+        </inertia>
+      </inertial>
+      <collision name='HR_HIP_collision'>
+        <pose>0 -0.050000000000000003 0 1.5707963199999997 0 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.14999999999999999</length>
+            <radius>0.040000000000000001</radius>
+          </cylinder>
+        </geometry>
+      </collision>
+      <visual name='HR_HIP_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>-1 -1 1</scale>
+            <uri>model://lite3_description/Lite3/urdf/meshes/hip.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name='HR_HipY_joint' type='revolute'>
+      <pose relative_to='HR_HIP'>0 -0.097350000000000006 0 0 0 0</pose>
+      <parent>HR_HIP</parent>
+      <child>HR_THIGH</child>
+      <axis>
+        <xyz>0 -1 0</xyz>
+        <limit>
+          <lower>-2.6699999999999999</lower>
+          <upper>0.314</upper>
+          <effort>24</effort>
+          <velocity>26.199999999999999</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='HR_THIGH'>
+      <pose relative_to='HR_HipY_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-0.0039245 0.014631999999999999 -0.025146000000000002 0 0 0</pose>
+        <mass>0.85999999999999999</mass>
+        <inertia>
+          <ixx>0.0057359999999999998</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.00496</iyy>
+          <iyz>0</iyz>
+          <izz>0.001436</izz>
+        </inertia>
+      </inertial>
+      <collision name='HR_THIGH_collision'>
+        <pose>-0.014999999999999999 0 -0.080000000000000002 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.040000000000000001 0.044999999999999998 0.20000000000000001</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name='HR_THIGH_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 -1 1</scale>
+            <uri>model://lite3_description/Lite3/urdf/meshes/thigh.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <joint name='HR_Knee_joint' type='revolute'>
+      <pose relative_to='HR_THIGH'>0 0 -0.20000000000000001 0 0 0</pose>
+      <parent>HR_THIGH</parent>
+      <child>HR_SHANK</child>
+      <axis>
+        <xyz>0 -1 0</xyz>
+        <limit>
+          <lower>0.52400000000000002</lower>
+          <upper>2.7919999999999998</upper>
+          <effort>36</effort>
+          <velocity>17.300000000000001</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='HR_SHANK'>
+      <pose relative_to='HR_Knee_joint'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0.0057303364161849718 -1.2849346820809251e-06 -0.1318069942196532 0 0 0</pose>
+        <mass>0.17299999999999999</mass>
+        <inertia>
+          <ixx>0.001032954333274332</ixx>
+          <ixy>1.6651211558150289e-10</ixy>
+          <ixz>-1.0148425793063621e-05</ixz>
+          <iyy>0.0010500269160724949</iyy>
+          <iyz>2.2756193219653169e-09</iyz>
+          <izz>3.5880582872838213e-05</izz>
+        </inertia>
+      </inertial>
+      <collision name='HR_SHANK_collision'>
+        <pose>0.0050000000000000001 0 -0.029999999999999999 0 -0.20000000000000004 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.12</length>
+            <radius>0.014999999999999999</radius>
+          </cylinder>
+        </geometry>
+      </collision>
+      <collision name='HR_SHANK_collision_1'>
+        <pose>0.01 0 -0.14000000000000001 0 0.14999999999999999 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.10000000000000001</length>
+            <radius>0.014999999999999999</radius>
+          </cylinder>
+        </geometry>
+      </collision>
+      <collision name='HR_SHANK_fixed_joint_lump__HR_FOOT_collision_2'>
+        <pose>0 0 -0.21012 1.57079632679 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.021999999999999999</radius>
+          </sphere>
+        </geometry>
+      </collision>
+      <visual name='HR_SHANK_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://lite3_description/Lite3/urdf/meshes/shank.STL</uri>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+    <plugin name='gz_ros2_control::GazeboSimROS2ControlPlugin' filename='libgz_ros2_control-system.so'>
+      <parameters>/home/lexion/lite3_ws/src/lite3_gazebo/config/controllers.yaml</parameters>
+    </plugin>
+    <frame name='FL_Ankle' attached_to='FL_SHANK'>
+      <pose>0 0 -0.21012 0 0 0</pose>
+    </frame>
+    <frame name='FL_FOOT' attached_to='FL_Ankle'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='FR_Ankle' attached_to='FR_SHANK'>
+      <pose>0 0 -0.21012 0 0 0</pose>
+    </frame>
+    <frame name='FR_FOOT' attached_to='FR_Ankle'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='HL_Ankle' attached_to='HL_SHANK'>
+      <pose>0 0 -0.21012 0 0 0</pose>
+    </frame>
+    <frame name='HL_FOOT' attached_to='HL_Ankle'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='HR_Ankle' attached_to='HR_SHANK'>
+      <pose>0 0 -0.21012 0 0 0</pose>
+    </frame>
+    <frame name='HR_FOOT' attached_to='HR_Ankle'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+  </model>
+</sdf>
