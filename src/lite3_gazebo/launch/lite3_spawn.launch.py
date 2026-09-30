@@ -1,5 +1,5 @@
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription, RegisterEventHandler
+from launch.actions import IncludeLaunchDescription, RegisterEventHandler, TimerAction
 from launch.event_handlers import OnProcessExit
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
@@ -22,11 +22,15 @@ def generate_launch_description():
         'ros_gz_sim'
     )
 
+    # --------------------------------------------------
+    # Files
+    # --------------------------------------------------
+
     urdf_file = os.path.join(
         description_share,
         'Lite3',
         'urdf',
-        'Lite3_gazebo.urdf'
+        'Lite3_fixed_base.urdf'
     )
 
     world_file = os.path.join(
@@ -72,6 +76,19 @@ def generate_launch_description():
     )
 
     # --------------------------------------------------
+    # Gazebo -> ROS 2 clock bridge
+    # --------------------------------------------------
+
+    clock_bridge = Node(
+        package='ros_gz_bridge',
+        executable='parameter_bridge',
+        arguments=[
+            '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock'
+        ],
+        output='screen'
+    )
+
+    # --------------------------------------------------
     # Spawn robot
     # --------------------------------------------------
 
@@ -83,7 +100,7 @@ def generate_launch_description():
             '-topic', 'robot_description',
             '-x', '0',
             '-y', '0',
-            '-z', '0.3435'
+            '-z', '0.55'
         ],
         output='screen'
     )
@@ -103,18 +120,6 @@ def generate_launch_description():
         output='screen'
     )
 
-    effort_controller_spawner = Node(
-    package="controller_manager",
-    executable="spawner",
-    arguments=[
-        "lite3_effort_controller",
-        "--controller-manager",
-        "/controller_manager",
-        "--inactive",
-    ],
-    output="screen",
-)
-
     position_controller_spawner = Node(
         package='controller_manager',
         executable='spawner',
@@ -127,21 +132,47 @@ def generate_launch_description():
         output='screen'
     )
 
-    # Start controllers after robot spawn
+    effort_controller_spawner = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=[
+            'lite3_effort_controller',
+            '--controller-manager',
+            '/controller_manager',
+            '--inactive'
+        ],
+        output='screen'
+    )
+
+    # --------------------------------------------------
+    # Start controllers AFTER robot spawn
+    # and give clock bridge time to become active
+    # --------------------------------------------------
+
     controllers_after_spawn = RegisterEventHandler(
         event_handler=OnProcessExit(
             target_action=spawn,
             on_exit=[
-                joint_state_broadcaster_spawner,
-                position_controller_spawner
+                TimerAction(
+                    period=2.0,
+                    actions=[
+                        joint_state_broadcaster_spawner,
+                        position_controller_spawner,
+                        effort_controller_spawner,
+                    ]
+                )
             ]
         )
     )
 
+    # --------------------------------------------------
+    # Launch description
+    # --------------------------------------------------
+
     return LaunchDescription([
         gz_sim,
+        clock_bridge,
         rsp,
         spawn,
-        controllers_after_spawn,
-         effort_controller_spawner
+        controllers_after_spawn
     ])

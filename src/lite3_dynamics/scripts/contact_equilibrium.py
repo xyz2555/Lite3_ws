@@ -13,6 +13,7 @@ from rclpy.node import Node
 
 from sensor_msgs.msg import JointState
 from ros_gz_interfaces.msg import Contacts
+from geometry_msgs.msg import PoseStamped
 
 
 URDF_PATH = Path(
@@ -442,17 +443,20 @@ class ContactEquilibrium(Node):
         #
         # RPY:
         # 0.002525 -0.001346 -0.001385
-        self.base_xyz = np.array([
-            0.029007,
-            -0.001997,
-            0.342831,
+        if self.base_pose is None:
+            return
+
+        base_msg = self.base_pose
+
+        base_xyz = np.array([
+            base_msg.pose.position.x,
+            base_msg.pose.position.y,
+            base_msg.pose.position.z
         ])
 
-        self.base_rpy = np.array([
-            0.002525,
-            -0.001346,
-            -0.001385,
-        ])
+        R_WB = self.quat_to_rotation_matrix(
+            base_msg.pose.orientation
+        )
 
         self.urdf = Lite3URDFModel(
             URDF_PATH
@@ -472,6 +476,18 @@ class ContactEquilibrium(Node):
             f"{self.urdf.total_mass:.6f} kg"
         )
 
+        self.base_pose = None
+
+        self.base_pose_sub = self.create_subscription(
+        PoseStamped,
+        '/lite3/base_pose',
+        self.base_pose_callback,
+        20
+        )
+
+    def base_pose_callback(self, msg):
+        self.base_pose = msg
+
     def joint_callback(self, msg):
 
         with self.lock:
@@ -484,7 +500,29 @@ class ContactEquilibrium(Node):
                 self.joint_positions[name] = (
                     float(position)
                 )
+    def quat_to_rotation_matrix(self, q):
+        x = q.x
+        y = q.y
+        z = q.z
+        w = q.w
 
+        return np.array([
+            [
+                1 - 2*(y*y + z*z),
+                2*(x*y - z*w),
+                2*(x*z + y*w)
+            ],
+            [
+                2*(x*y + z*w),
+                1 - 2*(x*x + z*z),
+                2*(y*z - x*w)
+            ],
+            [
+                2*(x*z - y*w),
+                2*(y*z + x*w),
+                1 - 2*(x*x + y*y)
+            ]
+        ])
     def contact_callback(self, msg, leg):
 
         sim_time = (

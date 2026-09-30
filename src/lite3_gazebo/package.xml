@@ -11,6 +11,8 @@
 
   <depend>robot_state_publisher</depend>
   <depend>ros_gz_sim</depend>
+  <depend>ros_gz_bridge</depend>
+  <depend>rosgraph_msgs</depend>
   <depend>xacro</depend>
   <depend>lite3_description</depend>
   <depend>rclpy</depend>
@@ -20,6 +22,7 @@
   <depend>eigen</depend>
   <depend>lite3_kinematics</depend>
   <depend>lite3_dynamics</depend>
+  <depend>nav_msgs</depend>
 
   <export>
         <build_type>ament_cmake</build_type>

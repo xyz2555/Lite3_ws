@@ -6,6 +6,7 @@ find_package(rclpy REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(nav_msgs REQUIRED)
 find_package(Eigen3 REQUIRED)
 find_package(lite3_kinematics REQUIRED)
 find_package(lite3_dynamics REQUIRED)
@@ -180,5 +181,79 @@ install(
     scripts/gazebo_fk_validator.py
   DESTINATION lib/${PROJECT_NAME}
 )
+
+add_executable(single_step_stair_controller
+  src/single_step_stair_controller.cpp
+)
+
+ament_target_dependencies(
+  single_step_stair_controller
+  rclcpp
+  sensor_msgs
+  std_msgs
+  nav_msgs
+)
+
+target_link_libraries(
+  single_step_stair_controller
+  lite3_kinematics::lite3_kinematics_lib
+  Eigen3::Eigen
+)
+
+install(
+  TARGETS
+    single_step_stair_controller
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+add_executable(single_leg_lift_test
+  src/single_leg_lift_test.cpp
+)
+
+ament_target_dependencies(
+  single_leg_lift_test
+  rclcpp
+  sensor_msgs
+  std_msgs
+  nav_msgs
+)
+
+target_link_libraries(
+  single_leg_lift_test
+  lite3_kinematics::lite3_kinematics_lib
+  Eigen3::Eigen
+)
+
+install(
+  TARGETS
+    single_leg_lift_test
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+add_executable(three_leg_stability_test
+  src/three_leg_stability_test.cpp
+)
+
+ament_target_dependencies(
+  three_leg_stability_test
+  rclcpp
+  sensor_msgs
+  std_msgs
+)
+
+target_link_libraries(
+  three_leg_stability_test
+  lite3_dynamics::lite3_dynamics_lib
+  lite3_kinematics::lite3_kinematics_lib
+  Eigen3::Eigen
+)
+
+install(
+  TARGETS
+    three_leg_stability_test
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+
 
 ament_package()

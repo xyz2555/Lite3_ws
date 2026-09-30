@@ -1,0 +1,57 @@
+/**:
+  ros__parameters:
+
+    start_experiment: false
+
+    # ==========================================================
+    # Stair geometry
+    # Berdasarkan pengukuran tangga Lantai 1 -> Lantai 2
+    # ==========================================================
+
+    stair_height: 0.185
+    tread_depth: 0.315
+
+    # Posisi riser terhadap world frame.
+    stair_start_x: 0.0
+
+    # ==========================================================
+    # Landing position
+    # Ini masih parameter awal.
+    # Nanti akan dibuat adaptive:
+    #
+    # landing_x = f(height, tread, body_pose, leg)
+    # ==========================================================
+
+    front_landing_x: 0.22
+    hind_landing_x: 0.08
+
+    # ==========================================================
+    # Foot trajectory
+    # ==========================================================
+
+    clearance: 0.060
+    foot_radius: 0.022
+
+    # ==========================================================
+    # Timing
+    # ==========================================================
+
+    swing_duration: 3.0
+    settle_duration: 1.0
+    prepare_duration: 2.0
+
+    # ==========================================================
+    # Riser crossing
+    # ==========================================================
+
+    riser_clearance_x: 0.050
+    landing_margin: 0.040
+
+    # ==========================================================
+    # Controller loop
+    # ==========================================================
+
+    position_command_rate_hz: 100.0
+
+    # Frekuensi warning ketika IK gagal.
+    ik_warning_period_s: 1.0

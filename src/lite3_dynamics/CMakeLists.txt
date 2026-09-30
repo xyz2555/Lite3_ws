@@ -13,6 +13,14 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(Eigen3 REQUIRED)
 find_package(lite3_kinematics REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(PkgConfig REQUIRED)
+find_package(sensor_msgs REQUIRED)
+find_package(ros_gz_interfaces REQUIRED)
+
+pkg_check_modules(GZ_TRANSPORT REQUIRED IMPORTED_TARGET gz-transport13)
+pkg_check_modules(GZ_MSGS REQUIRED IMPORTED_TARGET gz-msgs10)
 
 # ============================================================
 # Dynamics library
@@ -127,6 +135,45 @@ target_link_libraries(
   Eigen3::Eigen
 )
 
+add_executable(contact_torque_validator
+  src/contact_torque_validator.cpp
+)
+
+ament_target_dependencies(
+  contact_torque_validator
+  rclcpp
+  sensor_msgs
+  geometry_msgs
+  ros_gz_interfaces
+  lite3_kinematics
+)
+
+target_link_libraries(
+  contact_torque_validator
+  lite3_dynamics_lib
+)
+
+install(
+  TARGETS contact_torque_validator
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+add_executable(lite3_base_pose_bridge
+  src/lite3_base_pose_bridge.cpp
+)
+
+ament_target_dependencies(
+  lite3_base_pose_bridge
+  rclcpp
+  geometry_msgs
+)
+
+target_link_libraries(
+  lite3_base_pose_bridge
+  PkgConfig::GZ_TRANSPORT
+  PkgConfig::GZ_MSGS
+)
+
 add_executable(
   stair_contact_equilibrium
   src/stair_contact_equilibrium.cpp
@@ -182,6 +229,131 @@ ament_target_dependencies(
   Eigen3
 )
 
+add_executable(dynamic_inverse_dynamics_validator
+  src/dynamic_inverse_dynamics_validator.cpp
+)
+
+ament_target_dependencies(
+  dynamic_inverse_dynamics_validator
+  rclcpp
+  sensor_msgs
+  rosgraph_msgs
+)
+
+target_link_libraries(
+  dynamic_inverse_dynamics_validator
+  lite3_dynamics_lib
+  lite3_kinematics::lite3_kinematics_lib
+  Eigen3::Eigen
+)
+
+add_executable(dynamic_inverse_dynamics_validator_qpoly_compare
+  src/dynamic_inverse_dynamics_validator_qpoly_compare.cpp
+)
+
+ament_target_dependencies(
+  dynamic_inverse_dynamics_validator_qpoly_compare
+  rclcpp
+  sensor_msgs
+  rosgraph_msgs
+  lite3_kinematics
+)
+
+target_link_libraries(
+  dynamic_inverse_dynamics_validator_qpoly_compare
+  lite3_dynamics_lib
+)
+
+add_executable(lite3_raw_joint_logger
+  src/lite3_raw_joint_logger.cpp
+)
+
+ament_target_dependencies(
+  lite3_raw_joint_logger
+  rclcpp
+  sensor_msgs
+  rosgraph_msgs
+)
+
+target_link_libraries(
+  lite3_raw_joint_logger
+  lite3_dynamics_lib
+)
+
+add_executable(lite3_raw_clock_joint_logger
+  src/lite3_raw_clock_joint_logger.cpp
+)
+
+ament_target_dependencies(
+  lite3_raw_clock_joint_logger
+  rclcpp
+  sensor_msgs
+  rosgraph_msgs
+)
+
+target_link_libraries(
+  lite3_raw_clock_joint_logger
+  lite3_dynamics_lib
+)
+
+add_executable(lite3_dynamic_inverse_dynamics_offline
+  src/lite3_dynamic_inverse_dynamics_offline.cpp
+)
+
+ament_target_dependencies(
+  lite3_dynamic_inverse_dynamics_offline
+  lite3_kinematics
+)
+
+target_link_libraries(
+  lite3_dynamic_inverse_dynamics_offline
+  lite3_dynamics_lib
+)
+
+add_executable(lite3_high_accel_trajectory
+  src/lite3_high_accel_trajectory.cpp
+)
+
+ament_target_dependencies(
+  lite3_high_accel_trajectory
+  rclcpp
+  std_msgs
+)
+
+target_link_libraries(
+  lite3_high_accel_trajectory
+  lite3_dynamics_lib
+)
+
+add_executable(lite3_highacc_inverse_dynamics_window_compare
+  src/lite3_highacc_inverse_dynamics_window_compare.cpp
+)
+
+ament_target_dependencies(lite3_highacc_inverse_dynamics_window_compare
+  rclcpp
+)
+
+target_link_libraries(lite3_highacc_inverse_dynamics_window_compare
+  Eigen3::Eigen
+  lite3_dynamics_lib
+)
+
+add_executable(lite3_effort_gravity_excitation
+  src/lite3_effort_gravity_excitation.cpp
+)
+
+ament_target_dependencies(lite3_effort_gravity_excitation
+  rclcpp
+  sensor_msgs
+  std_msgs
+)
+
+target_link_libraries(lite3_effort_gravity_excitation
+  lite3_dynamics_lib
+  lite3_kinematics::lite3_kinematics_lib
+  Eigen3::Eigen
+)
+
 # ============================================================
 # Install
 # ============================================================
@@ -201,6 +373,15 @@ install(
     stair_posture_ik
     stair_contact_aware_inverse_dynamics
     stair_com_shift_contact_equilibrium
+    lite3_base_pose_bridge
+    dynamic_inverse_dynamics_validator
+    dynamic_inverse_dynamics_validator_qpoly_compare
+    lite3_raw_joint_logger
+    lite3_raw_clock_joint_logger
+    lite3_dynamic_inverse_dynamics_offline
+    lite3_high_accel_trajectory
+    lite3_highacc_inverse_dynamics_window_compare
+    lite3_effort_gravity_excitation
 
   EXPORT lite3_dynamics_targets
 

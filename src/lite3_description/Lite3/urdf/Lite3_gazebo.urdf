@@ -496,90 +496,144 @@
 
     <joint name="FL_HipX_joint">
       <command_interface name="position"/>
-      <state_interface name="position"/>
+      <command_interface name="effort"/>
+      <state_interface name="position">
+      <param name="initial_value">-0.02073</param>
+      </state_interface>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
     </joint>
 
     <joint name="FL_HipY_joint">
       <command_interface name="position"/>
-      <state_interface name="position"/>
+      <command_interface name="effort"/>
+       <state_interface name="position">
+    <param name="initial_value">-0.67214</param>
+  </state_interface>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
     </joint>
 
     <joint name="FL_Knee_joint">
       <command_interface name="position"/>
-      <state_interface name="position"/>
+      <command_interface name="effort"/>
+       <state_interface name="position">
+    <param name="initial_value">1.32366</param>
+  </state_interface>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>
     </joint>
 
 
     <joint name="FR_HipX_joint">
-      <command_interface name="position"/>
-      <state_interface name="position"/>
-      <state_interface name="velocity"/>
-      <state_interface name="effort"/>
-    </joint>
+  <command_interface name="position"/>
+  <command_interface name="effort"/>
 
-    <joint name="FR_HipY_joint">
-      <command_interface name="position"/>
-      <state_interface name="position"/>
-      <state_interface name="velocity"/>
-      <state_interface name="effort"/>
-    </joint>
+  <state_interface name="position">
+    <param name="initial_value">0.01497</param>
+  </state_interface>
 
-    <joint name="FR_Knee_joint">
-      <command_interface name="position"/>
-      <state_interface name="position"/>
-      <state_interface name="velocity"/>
-      <state_interface name="effort"/>
-    </joint>
+  <state_interface name="velocity"/>
+  <state_interface name="effort"/>
+</joint>
+
+<joint name="FR_HipY_joint">
+  <command_interface name="position"/>
+  <command_interface name="effort"/>
+
+  <state_interface name="position">
+    <param name="initial_value">-0.67765</param>
+  </state_interface>
+
+  <state_interface name="velocity"/>
+  <state_interface name="effort"/>
+</joint>
+
+<joint name="FR_Knee_joint">
+  <command_interface name="position"/>
+  <command_interface name="effort"/>
+
+  <state_interface name="position">
+    <param name="initial_value">1.33907</param>
+  </state_interface>
+
+  <state_interface name="velocity"/>
+  <state_interface name="effort"/>
+</joint>
 
 
     <joint name="HL_HipX_joint">
-      <command_interface name="position"/>
-      <state_interface name="position"/>
-      <state_interface name="velocity"/>
-      <state_interface name="effort"/>
-    </joint>
+  <command_interface name="position"/>
+  <command_interface name="effort"/>
 
-    <joint name="HL_HipY_joint">
-      <command_interface name="position"/>
-      <state_interface name="position"/>
-      <state_interface name="velocity"/>
-      <state_interface name="effort"/>
-    </joint>
+  <state_interface name="position">
+    <param name="initial_value">-0.02465</param>
+  </state_interface>
 
-    <joint name="HL_Knee_joint">
-      <command_interface name="position"/>
-      <state_interface name="position"/>
-      <state_interface name="velocity"/>
-      <state_interface name="effort"/>
-    </joint>
+  <state_interface name="velocity"/>
+  <state_interface name="effort"/>
+</joint>
+
+<joint name="HL_HipY_joint">
+  <command_interface name="position"/>
+  <command_interface name="effort"/>
+
+  <state_interface name="position">
+    <param name="initial_value">-0.64953</param>
+  </state_interface>
+
+  <state_interface name="velocity"/>
+  <state_interface name="effort"/>
+</joint>
+
+<joint name="HL_Knee_joint">
+  <command_interface name="position"/>
+  <command_interface name="effort"/>
+
+  <state_interface name="position">
+    <param name="initial_value">1.32289</param>
+  </state_interface>
+
+  <state_interface name="velocity"/>
+  <state_interface name="effort"/>
+</joint>
 
 
     <joint name="HR_HipX_joint">
-      <command_interface name="position"/>
-      <state_interface name="position"/>
-      <state_interface name="velocity"/>
-      <state_interface name="effort"/>
-    </joint>
+  <command_interface name="position"/>
+  <command_interface name="effort"/>
 
-    <joint name="HR_HipY_joint">
-      <command_interface name="position"/>
-      <state_interface name="position"/>
-      <state_interface name="velocity"/>
-      <state_interface name="effort"/>
-    </joint>
+  <state_interface name="position">
+    <param name="initial_value">0.01714</param>
+  </state_interface>
 
-    <joint name="HR_Knee_joint">
-      <command_interface name="position"/>
-      <state_interface name="position"/>
-      <state_interface name="velocity"/>    
-      <state_interface name="effort"/>
-    </joint>
+  <state_interface name="velocity"/>
+  <state_interface name="effort"/>
+</joint>
+
+<joint name="HR_HipY_joint">
+  <command_interface name="position"/>
+  <command_interface name="effort"/>
+
+  <state_interface name="position">
+    <param name="initial_value">-0.65116</param>
+  </state_interface>
+
+  <state_interface name="velocity"/>
+  <state_interface name="effort"/>
+</joint>
+
+<joint name="HR_Knee_joint">
+  <command_interface name="position"/>
+  <command_interface name="effort"/>
+
+  <state_interface name="position">
+    <param name="initial_value">1.33529</param>
+  </state_interface>
+
+  <state_interface name="velocity"/>
+  <state_interface name="effort"/>
+</joint>
 
   </ros2_control>
 

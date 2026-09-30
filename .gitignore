@@ -1,4 +1,5 @@
 log/
 build/
 install/
+data/
 *.csv
