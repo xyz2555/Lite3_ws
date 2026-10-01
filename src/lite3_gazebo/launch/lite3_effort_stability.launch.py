@@ -210,7 +210,7 @@ def generate_launch_description():
             "0.0",
 
             "-z",
-            "0.345",
+            "0.35",
 
         ],
 
@@ -326,9 +326,9 @@ def generate_launch_description():
 
         package="lite3_gazebo",
 
-        executable="three_leg_stability_test",
+        executable="gravity_only_controller",
 
-        name="three_leg_stability_test",
+        name="gravity_only_controller",
 
         output="screen",
 
@@ -339,41 +339,43 @@ def generate_launch_description():
                 "use_sim_time":
                     True,
 
-                "start_experiment":
-                    False,
+                # "start_experiment":
+                #     False,
 
+                "start_handover": False,
+                
                 "kp":
-                    2.0,
+                    40.0,
 
                 "kd":
-                    0.5,
-
-                "publish_rate":
-                    500.0,
-
-                "body_shift_x":
-                    -0.010,
-
-                "body_shift_y":
-                    -0.010,
-
-                "body_shift_duration":
-                    4.0,
-
-                "shift_hold_duration":
                     1.5,
 
-                "fl_lift_height":
-                    0.005,
+                # "publish_rate":
+                #     500.0,
 
-                "fl_lift_duration":
-                    2.5,
+                # "body_shift_x":
+                #     -0.010,
 
-                "fl_hold_duration":
-                    1.0,
+                # "body_shift_y":
+                #     -0.010,
 
-                "prepare_duration":
-                    2.0,
+                # "body_shift_duration":
+                #     4.0,
+
+                # "shift_hold_duration":
+                #     1.5,
+
+                # "fl_lift_height":
+                #     0.005,
+
+                # "fl_lift_duration":
+                #     2.5,
+
+                # "fl_hold_duration":
+                #     1.0,
+
+                # "prepare_duration":
+                #     2.0,
 
             }
 
@@ -471,5 +473,7 @@ def generate_launch_description():
         spawn,
 
         start_controllers,
+
+        start_stability_controller,
 
     ])

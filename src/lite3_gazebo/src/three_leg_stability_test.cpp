@@ -61,11 +61,11 @@ public:
 
         declare_parameter<double>(
             "kp",
-            2.0);
+            20.0);
 
         declare_parameter<double>(
             "kd",
-            0.5);
+            1.0);
 
         declare_parameter<double>(
             "publish_rate",

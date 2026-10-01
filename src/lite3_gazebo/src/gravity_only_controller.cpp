@@ -266,6 +266,10 @@ private:
         return q_.segment<3>(3 * leg);
     }
 
+    Eigen::VectorXd tau_hold_ = Eigen::VectorXd::Zero(12);
+bool handover_started_ = false;
+double handover_t0_ = 0.0;
+
     // ================================================================
     // Store leg torque
     // ================================================================
@@ -511,6 +515,22 @@ private:
         // It does NOT mean it is currently actuating the robot.
         // ------------------------------------------------------------
 
+//         if (!effort_valid_) { return; }
+// this->get_parameter("start_handover", start_handover_);
+// const double now = this->now().seconds();
+
+// Eigen::VectorXd tau_cmd;
+// if (!start_handover_) {
+//   tau_hold_ = latest_effort_;        // yang sedang dipakai position controller
+//   tau_cmd = tau_hold_;
+// } else {
+//   if (!handover_started_) { handover_started_ = true; handover_t0_ = now; }
+//   const double r = std::clamp((now - handover_t0_) / handover_duration_, 0.0, 1.0);
+//   const double a = r*r*r*(10.0 - 15.0*r + 6.0*r*r);   // smoothstep
+//   tau_cmd = (1.0 - a) * tau_hold_ + a * tau_target_;
+// }
+// publishTorque(tau_cmd);
+        
         publishTorque(tau_target);
 
         // ------------------------------------------------------------
