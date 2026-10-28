@@ -1,0 +1,35 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  unit:
+    name: pure-python tests + flake8
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - run: pip install pytest numpy flake8
+      - run: flake8 --max-line-length 100 src
+      - run: |
+          PYTHONPATH=src/lite3_driver pytest -q src/lite3_driver/test
+          PYTHONPATH=src/lite3_safety pytest -q src/lite3_safety/test
+          PYTHONPATH=src/lite3_motion pytest -q src/lite3_motion/test
+
+  colcon:
+    name: colcon build (ROS 2 Humble)
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: ros-tooling/setup-ros@v0.7
+        with:
+          required-ros-distributions: humble
+      - uses: ros-tooling/action-ros-ci@v0.3
+        with:
+          target-ros2-distro: humble
+          package-name: lite3_driver lite3_safety lite3_motion lite3_workshop lite3_bringup
+          skip-tests: true

@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>lite3_bringup</name>
+  <version>0.2.0</version>
+  <description>Bringup launch for the Lite3: driver, obstacle guard, optional depth camera and waypoints.</description>
+  <maintainer email="darmawandeveloper@gmail.com">agus-darmawan</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <exec_depend>lite3_driver</exec_depend>
+  <exec_depend>lite3_safety</exec_depend>
+  <exec_depend>lite3_motion</exec_depend>
+  <exec_depend>tf2_ros</exec_depend>
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+  <exec_depend>ros2launch</exec_depend>
+  <!-- optional: realsense2_camera (only needed with launch_realsense:=true) -->
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

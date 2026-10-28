@@ -1,0 +1,12 @@
+{
+  "_comment": "Each waypoint is RELATIVE to the previous one (body-frame deltas). yaw is degrees.",
+  "default_linear_speed": 0.3,
+  "default_angular_speed": 0.5,
+  "waypoints": [
+    { "name": "forward_1m",      "x": 1.0,  "y": 0.0, "yaw": 0   },
+    { "name": "turn_left_90",    "x": 0.0,  "y": 0.0, "yaw": 90  },
+    { "name": "forward_0p5m",    "x": 0.5,  "y": 0.0, "yaw": 0   },
+    { "name": "turn_right_90",   "x": 0.0,  "y": 0.0, "yaw": -90 },
+    { "name": "back_to_start",   "x": -1.0, "y": 0.0, "yaw": 0   }
+  ]
+}

@@ -1,0 +1,34 @@
+# Parameters for lite3_safety/obstacle_guard
+# Load with: --ros-args --params-file obstacle_guard.yaml
+obstacle_guard:
+  ros__parameters:
+    enabled: true
+    cmd_vel_in: cmd_vel                 # what teleop / your nodes publish
+    cmd_vel_out: /lite3/cmd_vel_safe    # what lite3_driver listens to
+
+    stop_distance: 0.5                  # m, forward (or backward) motion blocked
+    slow_distance: 1.0                  # m, speed scaled down from here
+    hysteresis: 0.1                     # m, needed on top of stop_distance to resume
+    allow_lateral_when_blocked: true
+    allow_rotation_when_blocked: true
+    sensor_timeout: 0.5                 # s, older readings are ignored
+    fail_safe: true                     # no fresh data -> block
+    cmd_timeout: 0.5
+    rate_hz: 20.0
+
+    # Source 1: built-in ultrasound from lite3_driver (front + back)
+    use_ultrasound: true
+    ultrasound_front_topic: /lite3/ultrasound/front
+    ultrasound_back_topic: /lite3/ultrasound/back
+
+    # Source 2: depth camera looking forward (e.g. RealSense D435i on the laptop
+    # or on the onboard computer). realsense2_camera 4.x on Humble publishes
+    # /camera/camera/depth/image_rect_raw (16UC1, millimetres).
+    use_depth: false
+    depth_topic: /camera/camera/depth/image_rect_raw
+    depth_roi: [0.3, 0.7, 0.2, 0.65]    # x_min, x_max, y_min, y_max (image fractions)
+    depth_min_valid: 0.15
+    depth_max_valid: 4.0
+    depth_percentile: 5.0
+    depth_min_pixels: 50
+    depth_offset: 0.0                   # m, camera lens to front of the robot

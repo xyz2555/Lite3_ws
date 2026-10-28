@@ -1,0 +1,14 @@
+# twist_mux: teleop always wins over the automatic controller.
+# Start it with:  ros2 launch lite3_navigation goto.launch.py use_mux:=true
+# and run teleop remapped:  ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -r cmd_vel:=/cmd_vel_teleop
+twist_mux:
+  ros__parameters:
+    topics:
+      teleop:
+        topic: /cmd_vel_teleop
+        timeout: 0.5
+        priority: 100
+      auto:
+        topic: /cmd_vel_auto
+        timeout: 0.5
+        priority: 50

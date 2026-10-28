@@ -1,0 +1,41 @@
+# Parameters for lite3_navigation/go_to_point.
+# Use decimal numbers for every float (0.3, not 0): ROS rejects an int for a double parameter.
+go_to_point:
+  ros__parameters:
+    odom_frame: odom
+    base_frame: base_link
+    goal_topic: /goal_pose           # RViz2 "2D Goal Pose" publishes here
+    # cmd_topic / teleop_topic are set by goto.launch.py (depends on use_mux)
+    blocked_topic: /lite3/obstacle/blocked
+    state_topic: /lite3/basic_state
+    status_topic: /lite3/goto/status
+    rate_hz: 20.0
+    pose_timeout: 0.3                # s, older TF -> abort "pose_stale"
+    require_standing: true           # abort/reject unless basic_state is in standing_states
+    standing_states: [6]             # seen on Deeprcs 2.0.153: 1 = sitting, 6 = standing (inferred)
+
+    # limits -- start low, raise slowly (protocol maximums: 1.0 / 0.5 / 1.5)
+    max_vx: 0.3
+    max_wz: 0.5
+    max_ax: 0.5
+    max_aw: 1.0
+    min_vx: 0.05
+    min_wz: 0.1
+    # gains
+    k_lin: 0.8
+    k_ang: 1.2
+    # tolerances
+    xy_tol: 0.15
+    yaw_tol: 0.15
+    realign_factor: 1.5
+    # rotate / move switching
+    rotate_enter: 0.52
+    rotate_exit: 0.17
+    heading_freeze: 0.25
+    # failure handling
+    block_timeout: 10.0              # s waiting for the obstacle to clear before giving up
+    no_progress_timeout: 5.0
+    progress_eps_m: 0.05
+    progress_eps_rad: 0.1
+    timeout_base: 10.0
+    timeout_factor: 2.5
